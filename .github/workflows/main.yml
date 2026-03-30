@@ -44,7 +44,9 @@ jobs:
 
       - name: Upload and QR Code
         run: |
-          URL=$(curl --upload-file build/app/outputs/flutter-apk/app-release.apk https://transfer.sh/openspeak-debug.apk)
+          # 使用 file.io 上传并用 jq 解析出 link
+          RESPONSE=$(curl -F "file=@build/app/outputs/flutter-apk/app-release.apk" https://file.io)
+          URL=$(echo $RESPONSE | jq -r .link)
           echo "---------------------------------------------------------------"
           echo "   APK IS READY FOR DOWNLOAD"
           echo "   Link: $URL"
