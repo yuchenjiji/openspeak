@@ -9,7 +9,7 @@ import "tts_service.dart";
 class AzureTTSService implements TTSService {
   late final Dio _dio;
   late final String _url;
-  String _voiceName = "en-US-JennyNeural";
+  final String _voiceName = "en-US-JennyNeural";
 
   AzureTTSService() {
     final region = EnvConfig.azureSpeechRegion;

@@ -1,4 +1,4 @@
-name: openspeak
+﻿name: openspeak
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -50,6 +50,7 @@ dependencies:
   # Audio
   just_audio: ^0.9.42
   record: ^5.2.0
+  path_provider: ^2.1.5
   permission_handler: ^11.3.1
 
   # UI enhancements
@@ -115,3 +116,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+

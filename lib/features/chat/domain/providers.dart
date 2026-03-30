@@ -3,6 +3,7 @@
 import "../../../core/config/env_config.dart";
 import "../../../core/models/scenario.dart";
 import "../../../core/services/azure_chat_ai_service.dart";
+import "../../../core/services/azure_stt_service.dart";
 import "../../../core/services/azure_tts_service.dart";
 import "../../../core/services/chat_ai_service.dart";
 import "../../../core/services/cloudflare_grammar_service.dart";
@@ -30,7 +31,8 @@ final ttsServiceProvider = Provider<TTSService>((ref) {
 });
 
 final sttServiceProvider = Provider<STTService>((ref) {
-  return MockSTTService(); // Real STT coming next
+  if (EnvConfig.useMockServices) return MockSTTService();
+  return AzureSTTService();
 });
 
 // --- Repository Provider ---

@@ -1,7 +1,8 @@
 ﻿Analyzing openspeak...
 
-  error - lib\core\services\cloudflare_grammar_service.dart:22:46 - The getter 'cloudflareAIApiToken' isn't defined for the type 'EnvConfig'. Try importing the library that defines 'cloudflareAIApiToken', correcting the name to the name of an existing getter, or defining a getter or field named 'cloudflareAIApiToken'. - undefined_getter
-   info - lib\core\services\azure_tts_service.dart:12:10 - The private field _voiceName could be 'final'. Try making the field 'final'. - prefer_final_fields
+warning - lib\core\services\azure_stt_service.dart:2:8 - Unused import: 'dart:convert'. Try removing the import directive. - unused_import
+warning - lib\core\services\azure_stt_service.dart:4:8 - Unused import: 'dart:typed_data'. Try removing the import directive. - unused_import
+   info - lib\core\services\azure_stt_service.dart:80:27 - Use interpolation to compose strings and values. Try using string interpolation to build the composite string. - prefer_interpolation_to_compose_strings
    info - test_api.dart:7:32 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
    info - test_api.dart:18:5 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
    info - test_api.dart:21:3 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
@@ -28,4 +29,4 @@
    info - test_api.dart:114:102 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
    info - test_api.dart:115:17 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
 
-27 issues found.
+28 issues found.
