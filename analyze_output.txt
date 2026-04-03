@@ -1,0 +1,32 @@
+﻿Analyzing openspeak...
+
+warning - lib\core\services\azure_stt_service.dart:2:8 - Unused import: 'dart:convert'. Try removing the import directive. - unused_import
+warning - lib\core\services\azure_stt_service.dart:4:8 - Unused import: 'dart:typed_data'. Try removing the import directive. - unused_import
+   info - lib\core\services\azure_stt_service.dart:80:27 - Use interpolation to compose strings and values. Try using string interpolation to build the composite string. - prefer_interpolation_to_compose_strings
+   info - test_api.dart:7:32 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:18:5 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:21:3 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:26:3 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:30:3 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:34:65 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:43:5 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:59:7 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:60:14 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:61:17 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:65:3 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:68:40 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:76:34 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:76:64 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:77:17 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:81:3 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:84:40 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:96:7 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:97:14 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:98:17 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:102:3 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:105:45 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:114:34 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:114:102 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+   info - test_api.dart:115:17 - Don't invoke 'print' in production code. Try using a logging framework. - avoid_print
+
+28 issues found.
