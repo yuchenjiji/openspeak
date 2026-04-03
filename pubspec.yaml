@@ -46,6 +46,7 @@ dependencies:
 
   # Environment config
   flutter_dotenv: ^5.2.1
+  dynamic_color: ^1.7.0
 
   # Audio
   just_audio: ^0.9.42

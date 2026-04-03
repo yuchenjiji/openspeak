@@ -7,20 +7,20 @@ class AppTheme {
 
   static const Color _seedColor = Color(0xFF4A6CF7); // Vibrant blue
 
-  static ThemeData light() {
-    final colorScheme = ColorScheme.fromSeed(
+  static ThemeData light({ColorScheme? dynamicScheme}) {
+    final fallback = ColorScheme.fromSeed(
       seedColor: _seedColor,
       brightness: Brightness.light,
     );
-    return _buildTheme(colorScheme);
+    return _buildTheme(dynamicScheme ?? fallback);
   }
 
-  static ThemeData dark() {
-    final colorScheme = ColorScheme.fromSeed(
+  static ThemeData dark({ColorScheme? dynamicScheme}) {
+    final fallback = ColorScheme.fromSeed(
       seedColor: _seedColor,
       brightness: Brightness.dark,
     );
-    return _buildTheme(colorScheme);
+    return _buildTheme(dynamicScheme ?? fallback);
   }
 
   static ThemeData _buildTheme(ColorScheme colorScheme) {

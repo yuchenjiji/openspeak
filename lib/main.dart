@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,13 +17,17 @@ class OpenSpeakApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'OpenSpeak',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
-      themeMode: ThemeMode.system,
-      routerConfig: appRouter,
+    return DynamicColorBuilder(
+      builder: (lightDynamic, darkDynamic) {
+        return MaterialApp.router(
+          title: 'OpenSpeak',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light(dynamicScheme: lightDynamic),
+          darkTheme: AppTheme.dark(dynamicScheme: darkDynamic),
+          themeMode: ThemeMode.system,
+          routerConfig: appRouter,
+        );
+      },
     );
   }
 }
