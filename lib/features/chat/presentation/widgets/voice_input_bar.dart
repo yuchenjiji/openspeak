@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-/// Bottom bar for voice input with mic button, waveform animation and text preview.
 class VoiceInputBar extends StatelessWidget {
   final bool isListening;
   final bool isAIResponding;
@@ -29,12 +28,10 @@ class VoiceInputBar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainer,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(28),
-        ),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
         boxShadow: [
           BoxShadow(
-            color: colorScheme.shadow.withValues(alpha: 0.08),
+            color: colorScheme.shadow.withValues(alpha: 0.06),
             blurRadius: 8,
             offset: const Offset(0, -2),
           ),
@@ -47,52 +44,45 @@ class VoiceInputBar extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Partial recognized text preview
               if (isListening && partialText.isNotEmpty)
                 Container(
                   width: double.infinity,
                   margin: const EdgeInsets.only(bottom: 12),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   decoration: BoxDecoration(
                     color: colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Text(
                     partialText,
-                    style: textTheme.bodyLarge?.copyWith(
-                      color: colorScheme.onSurface,
-                    ),
+                    style: textTheme.bodyLarge
+                        ?.copyWith(color: colorScheme.onSurface),
                   ),
                 ),
-
-              // Waveform animation when listening
               if (isListening)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 12),
                   child: _WaveformAnimation(colorScheme: colorScheme),
                 ),
-
-              // Input row
               Row(
                 children: [
-                  // Text input field
                   Expanded(
                     child: _ChatTextField(
                       isListening: isListening,
                       isAIResponding: isAIResponding,
                       onSubmitted: onTextSubmitted,
-                      colorScheme: colorScheme,
-                      textTheme: textTheme,
                     ),
                   ),
                   const SizedBox(width: 12),
-
-                  // Mic / Send button
                   if (isListening && partialText.isNotEmpty)
-                    _SendButton(
+                    _CircleButton(
+                      icon: Icons.send_rounded,
+                      color: colorScheme.primary,
+                      iconColor: colorScheme.onPrimary,
                       onTap: onSendPressed,
-                      colorScheme: colorScheme,
                     )
                   else
                     _MicButton(
@@ -115,15 +105,11 @@ class _ChatTextField extends StatefulWidget {
   final bool isListening;
   final bool isAIResponding;
   final ValueChanged<String> onSubmitted;
-  final ColorScheme colorScheme;
-  final TextTheme textTheme;
 
   const _ChatTextField({
     required this.isListening,
     required this.isAIResponding,
     required this.onSubmitted,
-    required this.colorScheme,
-    required this.textTheme,
   });
 
   @override
@@ -139,56 +125,43 @@ class _ChatTextFieldState extends State<_ChatTextField> {
     super.dispose();
   }
 
+  void _submit() {
+    final text = _controller.text.trim();
+    if (text.isNotEmpty) {
+      widget.onSubmitted(text);
+      _controller.clear();
+      setState(() {});
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return TextField(
       controller: _controller,
       enabled: !widget.isListening && !widget.isAIResponding,
-      style: widget.textTheme.bodyLarge?.copyWith(
-        color: widget.colorScheme.onSurface,
-      ),
+      style: textTheme.bodyLarge?.copyWith(color: colorScheme.onSurface),
       decoration: InputDecoration(
         hintText: widget.isListening
             ? 'Listening...'
             : widget.isAIResponding
                 ? 'AI is thinking...'
                 : 'Type or tap mic to speak...',
-        hintStyle: widget.textTheme.bodyLarge?.copyWith(
-          color: widget.colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
-        ),
-        filled: true,
-        fillColor: widget.colorScheme.surfaceContainerHighest,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide.none,
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 14,
+        hintStyle: textTheme.bodyLarge?.copyWith(
+          color: colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
         ),
         suffixIcon: _controller.text.isNotEmpty
             ? IconButton(
-                onPressed: () {
-                  widget.onSubmitted(_controller.text);
-                  _controller.clear();
-                  setState(() {});
-                },
-                icon: Icon(
-                  Icons.send_rounded,
-                  color: widget.colorScheme.primary,
-                ),
+                onPressed: _submit,
+                icon: Icon(Icons.send_rounded, color: colorScheme.primary),
               )
             : null,
       ),
       textInputAction: TextInputAction.send,
       onChanged: (_) => setState(() {}),
-      onSubmitted: (text) {
-        if (text.trim().isNotEmpty) {
-          widget.onSubmitted(text);
-          _controller.clear();
-          setState(() {});
-        }
-      },
+      onSubmitted: (_) => _submit(),
     );
   }
 }
@@ -211,7 +184,7 @@ class _MicButton extends StatelessWidget {
     return GestureDetector(
       onTap: isDisabled ? null : onTap,
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 250),
         curve: Curves.easeInOut,
         width: isListening ? 64 : 56,
         height: isListening ? 64 : 56,
@@ -225,7 +198,7 @@ class _MicButton extends StatelessWidget {
           boxShadow: isListening
               ? [
                   BoxShadow(
-                    color: colorScheme.error.withValues(alpha: 0.3),
+                    color: colorScheme.error.withValues(alpha: 0.35),
                     blurRadius: 16,
                     spreadRadius: 4,
                   ),
@@ -246,13 +219,17 @@ class _MicButton extends StatelessWidget {
   }
 }
 
-class _SendButton extends StatelessWidget {
+class _CircleButton extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final Color iconColor;
   final VoidCallback onTap;
-  final ColorScheme colorScheme;
 
-  const _SendButton({
+  const _CircleButton({
+    required this.icon,
+    required this.color,
+    required this.iconColor,
     required this.onTap,
-    required this.colorScheme,
   });
 
   @override
@@ -262,15 +239,8 @@ class _SendButton extends StatelessWidget {
       child: Container(
         width: 56,
         height: 56,
-        decoration: BoxDecoration(
-          color: colorScheme.primary,
-          shape: BoxShape.circle,
-        ),
-        child: Icon(
-          Icons.send_rounded,
-          color: colorScheme.onPrimary,
-          size: 24,
-        ),
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        child: Icon(icon, color: iconColor, size: 24),
       ),
     );
   }
@@ -278,7 +248,6 @@ class _SendButton extends StatelessWidget {
 
 class _WaveformAnimation extends StatefulWidget {
   final ColorScheme colorScheme;
-
   const _WaveformAnimation({required this.colorScheme});
 
   @override
@@ -308,29 +277,26 @@ class _WaveformAnimationState extends State<_WaveformAnimation>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _controller,
-      builder: (context, _) {
-        return SizedBox(
-          height: 32,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(20, (i) {
-              final phase = (_controller.value * 2 * pi) + (i * 0.3);
-              final height = 8 + sin(phase).abs() * 20;
-              return Container(
-                width: 3,
-                height: height,
-                margin: const EdgeInsets.symmetric(horizontal: 1.5),
-                decoration: BoxDecoration(
-                  color: widget.colorScheme.primary.withValues(
-                    alpha: 0.4 + sin(phase).abs() * 0.6,
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              );
-            }),
-          ),
-        );
-      },
+      builder: (context, _) => SizedBox(
+        height: 32,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(20, (i) {
+            final phase = (_controller.value * 2 * pi) + (i * 0.3);
+            final h = 8 + sin(phase).abs() * 20;
+            return Container(
+              width: 3,
+              height: h,
+              margin: const EdgeInsets.symmetric(horizontal: 1.5),
+              decoration: BoxDecoration(
+                color: widget.colorScheme.primary
+                    .withValues(alpha: 0.4 + sin(phase).abs() * 0.6),
+                borderRadius: BorderRadius.circular(2),
+              ),
+            );
+          }),
+        ),
+      ),
     );
   }
 }

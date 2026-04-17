@@ -9,24 +9,16 @@ import 'widgets/streaming_bubble.dart';
 import 'widgets/typing_indicator.dart';
 import 'widgets/voice_input_bar.dart';
 
-/// Main chat conversation screen.
-class ChatScreen extends ConsumerStatefulWidget {
+class ChatPage extends ConsumerStatefulWidget {
   final Scenario scenario;
-  final bool showBackButton;
-  final List<Widget> appBarActions;
 
-  const ChatScreen({
-    super.key,
-    required this.scenario,
-    this.showBackButton = true,
-    this.appBarActions = const [],
-  });
+  const ChatPage({super.key, required this.scenario});
 
   @override
-  ConsumerState<ChatScreen> createState() => _ChatScreenState();
+  ConsumerState<ChatPage> createState() => _ChatPageState();
 }
 
-class _ChatScreenState extends ConsumerState<ChatScreen> {
+class _ChatPageState extends ConsumerState<ChatPage> {
   final _scrollController = ScrollController();
   late final ChatNotifier _chatNotifier;
 
@@ -38,9 +30,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _chatNotifier.addListener(_onStateChanged);
   }
 
-  void _onStateChanged() {
-    _scrollToBottom();
-  }
+  void _onStateChanged() => _scrollToBottom();
 
   @override
   void dispose() {
@@ -68,18 +58,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: colorScheme.surface,
-        automaticallyImplyLeading: widget.showBackButton,
         title: Column(
           children: [
             Text(
               widget.scenario.title,
-              style: textTheme.titleMedium?.copyWith(
-                color: colorScheme.onSurface,
-                fontWeight: FontWeight.w600,
-              ),
+              style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600),
             ),
             Text(
               widget.scenario.difficulty.label,
@@ -89,27 +73,17 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             ),
           ],
         ),
-        leading: widget.showBackButton
-            ? IconButton(
-                icon: Icon(
-                  Icons.arrow_back_rounded,
-                  color: colorScheme.onSurface,
-                ),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            : null,
-        actions: widget.appBarActions,
       ),
       body: ValueListenableBuilder<ChatState>(
         valueListenable: _chatNotifier,
-        builder: (context, chatState, child) {
+        builder: (context, chatState, _) {
           return Column(
             children: [
-              // Scenario info header
+              // Scenario banner
               Container(
                 width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   color: colorScheme.secondaryContainer.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(16),
@@ -118,10 +92,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   children: [
                     Icon(
                       widget.scenario.iconData,
-                      size: 20,
+                      size: 18,
                       color: colorScheme.onSecondaryContainer,
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Text(
                         widget.scenario.description,
@@ -134,18 +108,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ),
               ),
 
-              // Messages list
+              // Messages
               Expanded(
                 child: ListView.builder(
                   controller: _scrollController,
-                  padding: const EdgeInsets.only(top: 8, bottom: 8),
-                  itemCount:
-                      chatState.messages.length +
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  itemCount: chatState.messages.length +
                       (chatState.streamingAIText.isNotEmpty ? 1 : 0) +
-                      (chatState.isAIResponding &&
-                              chatState.streamingAIText.isEmpty
-                          ? 1
-                          : 0),
+                      (chatState.isAIResponding && chatState.streamingAIText.isEmpty ? 1 : 0),
                   itemBuilder: (context, index) {
                     if (index < chatState.messages.length) {
                       return ChatBubble(message: chatState.messages[index]);
@@ -163,7 +133,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 ),
               ),
 
-              // Voice input bar
+              // Voice input
               VoiceInputBar(
                 isListening: chatState.isListening,
                 isAIResponding: chatState.isAIResponding,
@@ -180,9 +150,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   _chatNotifier.stopListening();
                   _chatNotifier.sendSTTResult();
                 },
-                onTextSubmitted: (text) {
-                  _chatNotifier.sendMessage(text);
-                },
+                onTextSubmitted: _chatNotifier.sendMessage,
               ),
             ],
           );

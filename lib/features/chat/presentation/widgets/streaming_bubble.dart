@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// A chat bubble that displays streaming AI text with a blinking cursor.
 class StreamingBubble extends StatefulWidget {
   final String text;
-
   const StreamingBubble({super.key, required this.text});
 
   @override
@@ -35,7 +33,7 @@ class _StreamingBubbleState extends State<StreamingBubble>
     final textTheme = Theme.of(context).textTheme;
 
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 64, top: 4, bottom: 4),
+      padding: const EdgeInsets.only(left: 16, right: 56, top: 4, bottom: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -43,9 +41,8 @@ class _StreamingBubbleState extends State<StreamingBubble>
             padding: const EdgeInsets.only(bottom: 4, left: 4),
             child: Text(
               'AI Tutor',
-              style: textTheme.labelSmall?.copyWith(
-                color: colorScheme.onSurfaceVariant,
-              ),
+              style: textTheme.labelSmall
+                  ?.copyWith(color: colorScheme.onSurfaceVariant),
             ),
           ),
           Container(
@@ -61,26 +58,22 @@ class _StreamingBubbleState extends State<StreamingBubble>
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: AnimatedBuilder(
               animation: _cursorController,
-              builder: (context, _) {
-                return RichText(
-                  text: TextSpan(
-                    style: textTheme.bodyLarge?.copyWith(
-                      color: colorScheme.onPrimaryContainer,
-                    ),
-                    children: [
-                      TextSpan(text: widget.text),
-                      TextSpan(
-                        text: '▎',
-                        style: TextStyle(
-                          color: colorScheme.primary.withValues(
-                            alpha: _cursorController.value,
-                          ),
-                        ),
+              builder: (context, _) => RichText(
+                text: TextSpan(
+                  style: textTheme.bodyLarge
+                      ?.copyWith(color: colorScheme.onPrimaryContainer),
+                  children: [
+                    TextSpan(text: widget.text),
+                    TextSpan(
+                      text: '▎',
+                      style: TextStyle(
+                        color: colorScheme.primary
+                            .withValues(alpha: _cursorController.value),
                       ),
-                    ],
-                  ),
-                );
-              },
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
