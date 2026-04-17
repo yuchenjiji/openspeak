@@ -78,7 +78,7 @@ class AzureChatAIService implements ChatAIService {
       data: jsonEncode({
         "model": _model,
         "messages": _buildMessages(history, userMessage, systemPrompt),
-        "max_completion_tokens": 512,
+        "max_completion_tokens": 4000,
         "stream": true,
       }),
       options: Options(responseType: ResponseType.stream),
