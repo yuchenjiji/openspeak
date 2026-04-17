@@ -27,11 +27,11 @@ class WhisperSTTService implements STTService {
   WhisperSTTService() {
     _dio = Dio(
       BaseOptions(
-        baseUrl: EnvConfig.whisperBaseUrl,
+        baseUrl: EnvConfig.cloudflareAIBaseUrl,
         connectTimeout: const Duration(seconds: 10),
         receiveTimeout: const Duration(seconds: 60),
         headers: {
-          "Authorization": "Bearer ${EnvConfig.whisperApiKey}",
+          "Authorization": "Bearer ${EnvConfig.cloudflareAIToken}",
           "Accept": "application/json",
         },
       ),
@@ -58,8 +58,8 @@ class WhisperSTTService implements STTService {
         return;
       }
 
-      if (EnvConfig.whisperApiKey.isEmpty) {
-        _controller?.addError("WHISPER_API_KEY is not configured");
+      if (EnvConfig.cloudflareAIToken.isEmpty) {
+        _controller?.addError("CLOUDFLARE_AI_API_TOKEN is not configured");
         return;
       }
 
@@ -121,21 +121,19 @@ class WhisperSTTService implements STTService {
 
   Future<String?> _transcribeFile(File file, String language) async {
     try {
-      final locale = language.split("-").first.toLowerCase();
-      final form = FormData.fromMap({
-        "file": await MultipartFile.fromFile(file.path, filename: "audio.wav"),
-        "model": EnvConfig.whisperModel,
-        "language": locale,
-        "response_format": "json",
-      });
-
+      final bytes = await file.readAsBytes();
       final response = await _dio.post<Map<String, dynamic>>(
-        "/audio/transcriptions",
-        data: form,
-        options: Options(contentType: "multipart/form-data"),
+        "/${EnvConfig.whisperModel}",
+        data: Stream.fromIterable([bytes]),
+        options: Options(
+          contentType: "audio/wav",
+          headers: {"Content-Length": bytes.length},
+        ),
       );
 
-      return response.data?["text"] as String?;
+      // Native CF response: {"result": {"text": "..."}, "success": true}
+      final result = response.data?["result"];
+      return (result is Map ? result["text"] : response.data?["text"]) as String?;
     } on DioException catch (_) {
       return null;
     }
