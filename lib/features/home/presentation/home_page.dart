@@ -165,27 +165,29 @@ class _CategoryGrid extends StatelessWidget {
       itemCount: ScenarioCategory.values.length,
       itemBuilder: (context, i) {
         final cat = ScenarioCategory.values[i];
-        return InkWell(
-          onTap: () => context.go('/scenarios'),
-          borderRadius: BorderRadius.circular(16),
-          child: Container(
-            decoration: BoxDecoration(
-              color: colorScheme.surfaceContainerLow,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: colorScheme.outlineVariant),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            child: Row(
-              children: [
-                Icon(cat.iconData, size: 18, color: colorScheme.primary),
-                const SizedBox(width: 10),
-                Text(
-                  cat.label,
-                  style: textTheme.labelLarge?.copyWith(
-                    color: colorScheme.onSurface,
+        return Card(
+          clipBehavior: Clip.antiAlias,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: colorScheme.outlineVariant),
+          ),
+          child: InkWell(
+            onTap: () => context.go('/scenarios'),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 14),
+              child: Row(
+                children: [
+                  Icon(cat.iconData, size: 18, color: colorScheme.primary),
+                  const SizedBox(width: 10),
+                  Text(
+                    cat.label,
+                    style: textTheme.labelLarge?.copyWith(
+                      color: colorScheme.onSurface,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -203,58 +205,62 @@ class _FeaturedCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    return InkWell(
-      onTap: () => context.push('/chat/${scenario.id}'),
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        width: 152,
-        decoration: BoxDecoration(
-          color: colorScheme.primaryContainer,
+    return SizedBox(
+      width: 152,
+      child: Card(
+        clipBehavior: Clip.antiAlias,
+        color: colorScheme.primaryContainer,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: colorScheme.primary.withValues(alpha: 0.15),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                scenario.iconData,
-                size: 20,
-                color: colorScheme.onPrimaryContainer,
-              ),
-            ),
-            const Spacer(),
-            Text(
-              scenario.title,
-              style: textTheme.titleSmall?.copyWith(
-                color: colorScheme.onPrimaryContainer,
-                fontWeight: FontWeight.w700,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 6),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              decoration: BoxDecoration(
-                color: colorScheme.primary.withValues(alpha: 0.2),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                scenario.difficulty.label,
-                style: textTheme.labelSmall?.copyWith(
-                  color: colorScheme.onPrimaryContainer,
-                  fontWeight: FontWeight.w600,
+        child: InkWell(
+          onTap: () => context.push('/chat/${scenario.id}'),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    scenario.iconData,
+                    size: 20,
+                    color: colorScheme.onPrimaryContainer,
+                  ),
                 ),
-              ),
+                const Spacer(),
+                Text(
+                  scenario.title,
+                  style: textTheme.titleSmall?.copyWith(
+                    color: colorScheme.onPrimaryContainer,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    scenario.difficulty.label,
+                    style: textTheme.labelSmall?.copyWith(
+                      color: colorScheme.onPrimaryContainer,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

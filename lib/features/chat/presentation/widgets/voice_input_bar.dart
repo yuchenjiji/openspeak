@@ -78,11 +78,15 @@ class VoiceInputBar extends StatelessWidget {
                   ),
                   const SizedBox(width: 12),
                   if (isListening && partialText.isNotEmpty)
-                    _CircleButton(
-                      icon: Icons.send_rounded,
-                      color: colorScheme.primary,
-                      iconColor: colorScheme.onPrimary,
-                      onTap: onSendPressed,
+                    IconButton(
+                      style: IconButton.styleFrom(
+                        backgroundColor: colorScheme.primary,
+                        foregroundColor: colorScheme.onPrimary,
+                        minimumSize: const Size(56, 56),
+                      ),
+                      icon: const Icon(Icons.send_rounded),
+                      tooltip: 'Send',
+                      onPressed: onSendPressed,
                     )
                   else
                     _MicButton(
@@ -181,8 +185,8 @@ class _MicButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: isDisabled ? null : onTap,
+    return Tooltip(
+      message: isListening ? 'Stop recording' : 'Start recording',
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeInOut,
@@ -205,42 +209,26 @@ class _MicButton extends StatelessWidget {
                 ]
               : null,
         ),
-        child: Icon(
-          isListening ? Icons.stop_rounded : Icons.mic_rounded,
-          color: isListening
-              ? colorScheme.onError
-              : isDisabled
-                  ? colorScheme.onSurfaceVariant
-                  : colorScheme.onPrimary,
-          size: 28,
+        child: Material(
+          color: Colors.transparent,
+          shape: const CircleBorder(),
+          clipBehavior: Clip.antiAlias,
+          child: InkWell(
+            customBorder: const CircleBorder(),
+            onTap: isDisabled ? null : onTap,
+            child: Center(
+              child: Icon(
+                isListening ? Icons.stop_rounded : Icons.mic_rounded,
+                color: isListening
+                    ? colorScheme.onError
+                    : isDisabled
+                        ? colorScheme.onSurfaceVariant
+                        : colorScheme.onPrimary,
+                size: 28,
+              ),
+            ),
+          ),
         ),
-      ),
-    );
-  }
-}
-
-class _CircleButton extends StatelessWidget {
-  final IconData icon;
-  final Color color;
-  final Color iconColor;
-  final VoidCallback onTap;
-
-  const _CircleButton({
-    required this.icon,
-    required this.color,
-    required this.iconColor,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 56,
-        height: 56,
-        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-        child: Icon(icon, color: iconColor, size: 24),
       ),
     );
   }

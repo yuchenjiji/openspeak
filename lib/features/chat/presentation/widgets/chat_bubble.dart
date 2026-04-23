@@ -76,7 +76,6 @@ class _ChatBubbleState extends State<ChatBubble> {
                             icon: Icons.volume_up_rounded,
                             label: 'Play',
                             onTap: () {},
-                            colorScheme: colorScheme,
                           ),
                         if (_isUser && widget.message.grammarFeedback != null)
                           _ActionChip(
@@ -87,7 +86,6 @@ class _ChatBubbleState extends State<ChatBubble> {
                             onTap: () => setState(
                               () => _showGrammarFeedback = !_showGrammarFeedback,
                             ),
-                            colorScheme: colorScheme,
                             highlight: true,
                           ),
                       ],
@@ -111,54 +109,34 @@ class _ActionChip extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
-  final ColorScheme colorScheme;
   final bool highlight;
 
   const _ActionChip({
     required this.icon,
     required this.label,
     required this.onTap,
-    required this.colorScheme,
     this.highlight = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(right: 8),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(
-            color: highlight
-                ? colorScheme.tertiaryContainer
-                : colorScheme.surface.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                icon,
-                size: 14,
-                color: highlight
-                    ? colorScheme.onTertiaryContainer
-                    : colorScheme.onSurfaceVariant,
-              ),
-              const SizedBox(width: 4),
-              Text(
-                label,
-                style: textTheme.labelSmall?.copyWith(
-                  color: highlight
-                      ? colorScheme.onTertiaryContainer
-                      : colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
-          ),
+      child: ActionChip(
+        avatar: Icon(icon, size: 14),
+        label: Text(label),
+        onPressed: onTap,
+        visualDensity: VisualDensity.compact,
+        backgroundColor: highlight ? colorScheme.tertiaryContainer : null,
+        side: highlight ? BorderSide.none : null,
+        iconTheme: IconThemeData(
+          size: 14,
+          color: highlight ? colorScheme.onTertiaryContainer : null,
+        ),
+        labelStyle: TextStyle(
+          fontSize: 11,
+          color: highlight ? colorScheme.onTertiaryContainer : null,
         ),
       ),
     );

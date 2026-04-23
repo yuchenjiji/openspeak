@@ -80,31 +80,32 @@ class _ChatPageState extends ConsumerState<ChatPage> {
           return Column(
             children: [
               // Scenario banner
-              Container(
-                width: double.infinity,
+              Card(
                 margin: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                  color: colorScheme.secondaryContainer.withValues(alpha: 0.5),
+                color: colorScheme.secondaryContainer,
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Row(
-                  children: [
-                    Icon(
-                      widget.scenario.iconData,
-                      size: 18,
-                      color: colorScheme.onSecondaryContainer,
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        widget.scenario.description,
-                        style: textTheme.bodySmall?.copyWith(
-                          color: colorScheme.onSecondaryContainer,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Row(
+                    children: [
+                      Icon(
+                        widget.scenario.iconData,
+                        size: 18,
+                        color: colorScheme.onSecondaryContainer,
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          widget.scenario.description,
+                          style: textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSecondaryContainer,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
